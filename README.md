@@ -72,14 +72,14 @@ restaurant-pos-system/
 
 ## Prerequisites
 
-* Java 17 or later
+* Java 23
 * Maven 3.6.3 or later
 * Docker
 * Docker Compose
 
 ## Tech Stack
 
-* Java 17
+* Java 23
 * Spring Boot 3.x
 * Spring Data MongoDB
 * Spring AMQP (RabbitMQ)
