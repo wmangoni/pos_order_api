@@ -39,7 +39,6 @@ public class MenuItemController {
     public ResponseEntity<Map<String, String>> deleteMenuItem(@PathVariable String id) {
         boolean deleted = menuItemService.deleteMenuItem(id);
         if (deleted) {
-            // As per spec: { "message": "Menu item deleted successfully", "id": "abc123" }
             Map<String, String> response = Map.of(
                 "message", "Menu item deleted successfully",
                 "id", id
@@ -65,11 +64,8 @@ public class MenuItemController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    // Global Exception Handler (Basic)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleGenericException(Exception ex) {
-        // Log the exception
-        // ex.printStackTrace(); // For debugging, don't use in prod directly
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(Collections.singletonMap("error", "An unexpected error occurred: " + ex.getMessage()));
     }

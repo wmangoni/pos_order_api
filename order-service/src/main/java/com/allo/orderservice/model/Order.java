@@ -15,7 +15,7 @@ import java.util.List;
 public class Order {
 
     @Id
-    private String id; // MongoDB document ID
+    private String id;
 
     private Customer customer;
     private List<OrderItem> orderItems;

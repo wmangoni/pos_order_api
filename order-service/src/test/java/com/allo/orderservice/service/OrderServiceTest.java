@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class) // Initializes mocks
+@ExtendWith(MockitoExtension.class)
 public class OrderServiceTest {
 
     @Mock
@@ -36,7 +36,7 @@ public class OrderServiceTest {
     @Mock
     private RabbitMQSender rabbitMQSender;
 
-    @InjectMocks // Creates an instance of OrderService and injects mocks into it
+    @InjectMocks
     private OrderService orderService;
 
     private CreateOrderRequestDTO createOrderRequestDTO;
@@ -45,13 +45,6 @@ public class OrderServiceTest {
 
     @BeforeEach
     void setUp() {
-        // Mock menu service base URL (normally from @Value)
-        // This can be done via reflection or by making the field package-private and setting it
-        // For simplicity, we'll assume it's correctly configured.
-        // A better way for tests is to use @TestPropertySource or constructor injection for such values.
-        // ReflectionTestUtils.setField(orderService, "menuServiceBaseUrl", "http://dummy-menu-service/menu-items");
-
-
         CustomerDTO customerDTO = new CustomerDTO("John Doe", "123 Main St", "john@example.com");
         OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO("prod123", 2);
         createOrderRequestDTO = new CreateOrderRequestDTO(customerDTO, Collections.singletonList(orderItemRequestDTO));
@@ -65,9 +58,9 @@ public class OrderServiceTest {
 
     @Test
     void createOrder_success() {
-        // Mock RestTemplate call to MenuService
+
         when(restTemplate.getForObject(anyString(), eq(MenuItemDetailsDTO.class))).thenReturn(menuItemDetailsDTO);
-        // Mock repository save
+
         when(orderRepository.save(any(Order.class))).thenReturn(savedOrder);
 
         OrderResponseDTO result = orderService.createOrder(createOrderRequestDTO);
@@ -82,7 +75,6 @@ public class OrderServiceTest {
 
         verify(restTemplate, times(1)).getForObject(anyString(), eq(MenuItemDetailsDTO.class));
         verify(orderRepository, times(1)).save(any(Order.class));
-        // verify(rabbitMQSender, times(1)).sendOrderStatusUpdate(anyString(), anyString(), any(Customer.class)); // If create publishes
     }
 
     @Test

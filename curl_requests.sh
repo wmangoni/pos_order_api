@@ -83,9 +83,9 @@ echo "\n1. Creating Order..."
 ORDER_PAYLOAD=$(cat <<EOF
 {
   "customer": {
-    "fullName": "John Doe",
+    "fullName": "William Mangoni",
     "address": "123 Main St, Anytown, USA",
-    "email": "john.doe@example.com"
+    "email": "william@gmail.com"
   },
   "orderItems": [
     { "productId": "${PIZZA_ID}", "quantity": 2 },

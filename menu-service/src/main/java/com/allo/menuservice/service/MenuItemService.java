@@ -29,9 +29,8 @@ public class MenuItemService {
     @Transactional
     public MenuItemResponseDTO createMenuItem(MenuItemRequestDTO requestDTO) {
         MenuItem menuItem = new MenuItem();
-        BeanUtils.copyProperties(requestDTO, menuItem); // Copy name, description, price
+        BeanUtils.copyProperties(requestDTO, menuItem);
         menuItem.setCreatedAt(LocalDateTime.now());
-        // menuItem.setUpdatedAt(LocalDateTime.now()); // Or null initially
         MenuItem savedItem = menuItemRepository.save(menuItem);
         return convertToResponseDTO(savedItem);
     }
@@ -64,7 +63,7 @@ public class MenuItemService {
         if (limit <= 0) limit = 10; // Default limit
         if (offset < 0) offset = 0; // Default offset
 
-        Pageable pageable = PageRequest.of(offset / limit, limit); // Page number is offset / limit
+        Pageable pageable = PageRequest.of(offset / limit, limit);
         Page<MenuItem> menuItemPage = menuItemRepository.findAll(pageable);
 
         List<MenuItemResponseDTO> dtoList = menuItemPage.getContent().stream()
@@ -78,7 +77,6 @@ public class MenuItemService {
         return menuItemRepository.findById(id).map(this::convertToResponseDTO);
     }
 
-    // Helper method to convert Entity to Response DTO
     private MenuItemResponseDTO convertToResponseDTO(MenuItem menuItem) {
         MenuItemResponseDTO dto = new MenuItemResponseDTO();
         BeanUtils.copyProperties(menuItem, dto);

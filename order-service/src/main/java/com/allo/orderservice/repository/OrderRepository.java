@@ -8,8 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends MongoRepository<Order, String> {
-    // Provides CRUD operations
 
-    // For paginated results
     Page<Order> findAll(Pageable pageable);
 }

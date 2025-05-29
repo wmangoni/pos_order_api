@@ -25,23 +25,21 @@ public class RabbitMQSender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    // Method to send order status update message
     public void sendOrderStatusUpdate(String orderId, String status, String customerFullName, String customerAddress, String customerEmail) {
-        // Create a map or a dedicated DTO for the message payload
+
         Map<String, Object> messagePayload = new HashMap<>();
         messagePayload.put("orderId", orderId);
         messagePayload.put("newStatus", status);
         messagePayload.put("customerFullName", customerFullName);
         messagePayload.put("customerAddress", customerAddress);
         messagePayload.put("customerEmail", customerEmail);
-        // Add any other relevant information for notification
 
         try {
             rabbitTemplate.convertAndSend(exchangeName, routingKey, messagePayload);
             logger.info("Sent order status update message to RabbitMQ for order ID {}: {}", orderId, messagePayload);
         } catch (Exception e) {
             logger.error("Error sending message to RabbitMQ for order ID {}: {}", orderId, e.getMessage());
-            // Implement retry logic or dead-letter queue for production
+            // We can implement retry logic or dead-letter queue for production
         }
     }
 }

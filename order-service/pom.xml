@@ -6,15 +6,14 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.5</version> <relativePath/> </parent>
-    <groupId>com.allo</groupId>
-    <artifactId>order-service</artifactId>
+    <groupId>com.example</groupId> <artifactId>order-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>order-service</name>
     <description>Order Service for Restaurant POS</description>
 
     <properties>
-        <java.version>23</java.version>
-    </properties>
+        <java.version>17</java.version>
+        <lombok.version>1.18.32</lombok.version> </properties>
 
     <dependencies>
         <dependency>
@@ -31,7 +30,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>${lombok.version}</version> <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -41,7 +40,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents.client5</groupId>
             <artifactId>httpclient5</artifactId>
-            <version>5.2.1</version> </dependency>
+            </dependency>
 
 
         <dependency>
@@ -57,18 +56,16 @@
         <dependency>
             <groupId>de.flapdoodle.embed</groupId>
             <artifactId>de.flapdoodle.embed.mongo</artifactId>
-            <version>4.9.2</version>
-            <scope>test</scope>
+            <version>4.9.2</version> <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>rabbitmq</artifactId>
-            <version>1.19.7</version> <scope>test</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>1.19.7</version>
             <scope>test</scope>
         </dependency>
 
@@ -78,10 +75,17 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M9</version>
+                <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <argLine>-Dnet.bytebuddy.experimental=true</argLine>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>

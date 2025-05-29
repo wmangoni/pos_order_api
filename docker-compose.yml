@@ -1,0 +1,69 @@
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - restaurant_network
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672" # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: myuser    # Novo usuário
+      RABBITMQ_DEFAULT_PASS: mypassword  # Nova senha
+      RABBITMQ_NODENAME: rabbit@localhost
+    networks:
+      - restaurant_network
+
+  menu-service:
+    build:
+      context: ./menu-service
+      dockerfile: Dockerfile
+    container_name: menu-service-app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/menu_db
+    networks:
+      - restaurant_network
+    restart: on-failure
+
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    container_name: order-service-app
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - menu-service
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/order_db
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=myuser    # Atualizado para o novo usuário
+      - SPRING_RABBITMQ_PASSWORD=mypassword  # Atualizado para a nova senha
+      - MENU_SERVICE_BASEURL=http://menu-service:8081/menu-items
+    networks:
+      - restaurant_network
+    restart: on-failure
+
+volumes:
+  mongo_data:
+  rabbitmq_data:
+
+networks:
+  restaurant_network:
+    driver: bridge

@@ -7,9 +7,9 @@ import lombok.AllArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem { // Keep as package-private or make public if used elsewhere directly
-    private String productId; // Corresponds to MenuItem ID
-    private String name;      // Fetched from MenuService
+public class OrderItem {
+    private String productId;
+    private String name;
     private int quantity;
-    private double price;     // Fetched from MenuService (price per unit at time of order)
+    private double price; // used double for simplicity, can be BigDecimal for precision or other robust tecniques
 }

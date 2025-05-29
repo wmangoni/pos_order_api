@@ -8,9 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -96,7 +93,7 @@ public class MenuItemControllerTest {
         updatedResponseDTO.setName("Updated Test Pizza");
         updatedResponseDTO.setDescription("Even more delicious");
         updatedResponseDTO.setPrice(12.99);
-        updatedResponseDTO.setCreatedAt(menuItemResponseDTO.getCreatedAt()); // CreatedAt should not change
+        updatedResponseDTO.setCreatedAt(menuItemResponseDTO.getCreatedAt());
         updatedResponseDTO.setUpdatedAt(LocalDateTime.now());
 
 

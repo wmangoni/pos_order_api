@@ -13,10 +13,10 @@ import java.util.List;
 @AllArgsConstructor
 public class CreateOrderRequestDTO {
     @NotNull(message = "Customer information cannot be null")
-    @Valid // Enable validation for nested CustomerDTO
+    @Valid
     private CustomerDTO customer;
 
     @NotEmpty(message = "Order items cannot be empty")
-    @Valid // Enable validation for list of OrderItemRequestDTO
+    @Valid
     private List<OrderItemRequestDTO> orderItems;
 }

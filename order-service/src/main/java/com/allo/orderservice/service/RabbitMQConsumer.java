@@ -12,12 +12,9 @@ public class RabbitMQConsumer {
 
     private static final Logger logger = LoggerFactory.getLogger(RabbitMQConsumer.class);
 
-    // Consumes messages from the order.status.queue
-    // The queue name is taken from application.properties via SpEL
     @RabbitListener(queues = "${app.rabbitmq.queue}")
     public void receiveOrderStatusUpdate(Map<String, Object> messagePayload) {
-        // The message payload will be a Map if Jackson2JsonMessageConverter is used
-        // and the producer sends a Map or a compatible JSON object.
+
         logger.info("Received order status update from RabbitMQ: {}", messagePayload);
 
         // Simulate sending a notification

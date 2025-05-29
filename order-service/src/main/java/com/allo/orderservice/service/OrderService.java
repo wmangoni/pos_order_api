@@ -47,7 +47,6 @@ public class OrderService {
     public OrderResponseDTO createOrder(CreateOrderRequestDTO requestDTO) {
         Order order = new Order();
 
-        // Map Customer DTO to Customer Entity
         Customer customer = new Customer();
         BeanUtils.copyProperties(requestDTO.getCustomer(), customer);
         order.setCustomer(customer);
@@ -67,7 +66,7 @@ public class OrderService {
             orderItem.setProductId(menuItemDetails.getId());
             orderItem.setName(menuItemDetails.getName());
             orderItem.setQuantity(itemRequest.getQuantity());
-            orderItem.setPrice(menuItemDetails.getPrice()); // Price at the time of order
+            orderItem.setPrice(menuItemDetails.getPrice());
             orderItems.add(orderItem);
 
             totalAmount += menuItemDetails.getPrice() * itemRequest.getQuantity();
@@ -75,14 +74,13 @@ public class OrderService {
 
         order.setOrderItems(orderItems);
         order.setTotalAmount(totalAmount);
-        order.setStatus(OrderStatus.CREATED); // Initial status
+        order.setStatus(OrderStatus.CREATED);
         order.setCreatedAt(LocalDateTime.now());
-        // order.setUpdatedAt(LocalDateTime.now());
 
         Order savedOrder = orderRepository.save(order);
         logger.info("Order created successfully with ID: {}", savedOrder.getId());
 
-        // Optionally, publish an event for order creation if needed (not specified, but good practice)
+        // Optionally, we can publish an event here
         // rabbitMQSender.sendOrderStatusUpdate(savedOrder.getId(), savedOrder.getStatus().name(), savedOrder.getCustomer());
 
 
@@ -104,7 +102,7 @@ public class OrderService {
             throw e; // Re-throw other client errors
         } catch (Exception e) {
             logger.error("Unexpected error fetching menu item details for productId {}: {}", productId, e.getMessage());
-            // Consider a custom exception or fallback mechanism
+            // We can have a custom exception or fallback mechanism here
             throw new RuntimeException("Error communicating with Menu Service for product ID: " + productId, e);
         }
     }
@@ -116,14 +114,12 @@ public class OrderService {
             Order order = orderOptional.get();
             try {
                 OrderStatus newStatus = OrderStatus.valueOf(newStatusStr.toUpperCase());
-                // Add logic here for valid status transitions if needed
-                // e.g., if (isValidTransition(order.getStatus(), newStatus))
+                // We can be valid status transitions here if needed: Ex,: if (isValidTransition(order.getStatus(), newStatus))
                 order.setStatus(newStatus);
                 order.setUpdatedAt(LocalDateTime.now());
                 Order updatedOrder = orderRepository.save(order);
                 logger.info("Order status updated for order ID {}: {}", orderId, newStatus);
 
-                // Publish order status update to RabbitMQ
                 rabbitMQSender.sendOrderStatusUpdate(
                     updatedOrder.getId(),
                     updatedOrder.getStatus().name(),
@@ -163,16 +159,14 @@ public class OrderService {
     // Helper to convert Order Entity to OrderResponseDTO
     private OrderResponseDTO convertToResponseDTO(Order order) {
         OrderResponseDTO dto = new OrderResponseDTO();
-        BeanUtils.copyProperties(order, dto, "customer", "orderItems", "status"); // Exclude fields needing custom mapping
+        BeanUtils.copyProperties(order, dto, "customer", "orderItems", "status");
 
-        // Map Customer
         CustomerDTO customerDTO = new CustomerDTO();
         if (order.getCustomer() != null) {
             BeanUtils.copyProperties(order.getCustomer(), customerDTO);
         }
         dto.setCustomer(customerDTO);
 
-        // Map OrderItems
         if (order.getOrderItems() != null) {
             dto.setOrderItems(order.getOrderItems().stream().map(itemEntity -> {
                 OrderItemResponseDTO itemDTO = new OrderItemResponseDTO();
@@ -181,7 +175,6 @@ public class OrderService {
             }).collect(Collectors.toList()));
         }
 
-        // Map Status
         if (order.getStatus() != null) {
             dto.setStatus(order.getStatus().name());
         }
@@ -195,13 +188,12 @@ public class OrderService {
         return dto;
     }
 
-    // Custom Exception for MenuItem Not Found during order creation
     public static class MenuItemNotFoundException extends RuntimeException {
         public MenuItemNotFoundException(String message) {
             super(message);
         }
     }
-    // Custom Exception for Invalid Order Status
+
     public static class InvalidOrderStatusException extends RuntimeException {
         public InvalidOrderStatusException(String message) {
             super(message);

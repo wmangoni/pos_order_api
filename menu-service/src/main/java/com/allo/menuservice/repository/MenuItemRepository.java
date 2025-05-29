@@ -8,10 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MenuItemRepository extends MongoRepository<MenuItem, String> {
-    // MongoRepository provides CRUD operations (save, findById, findAll, deleteById, etc.)
-    // Spring Data MongoDB will automatically implement these methods.
 
-    // For paginated results, Spring Data Pageable can be used directly.
-    // The controller will construct Pageable from limit and offset.
     Page<MenuItem> findAll(Pageable pageable);
 }

@@ -27,13 +27,11 @@ class RabbitMQConfig {
 
     @Bean
     Queue queue() {
-        // durable: true, exclusive: false, autoDelete: false
         return new Queue(queueName, true);
     }
 
     @Bean
     DirectExchange exchange() {
-        // durable: true, autoDelete: false
         return new DirectExchange(exchangeName, true, false);
     }
 
@@ -42,13 +40,11 @@ class RabbitMQConfig {
         return BindingBuilder.bind(queue).to(exchange).with(routingKey);
     }
 
-    // Optional: Configure a message converter (e.g., to send objects as JSON)
     @Bean
     public MessageConverter jsonMessageConverter() {
         return new Jackson2JsonMessageConverter();
     }
 
-    // Optional: Configure RabbitTemplate to use the JSON converter by default
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);

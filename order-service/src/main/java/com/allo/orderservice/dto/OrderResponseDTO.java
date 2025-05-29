@@ -15,7 +15,7 @@ public class OrderResponseDTO {
     private CustomerDTO customer;
     private List<OrderItemResponseDTO> orderItems;
     private double totalAmount;
-    private String status; // Using String for status as per example "CREATED"
+    private String status;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt; // Present on updates
+    private LocalDateTime updatedAt;
 }
