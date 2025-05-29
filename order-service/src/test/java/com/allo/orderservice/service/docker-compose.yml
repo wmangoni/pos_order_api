@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:latest # Use a specific version in production, e.g., mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017" # Expose MongoDB port to host
+    volumes:
+      - mongo_data:/data/db # Persist MongoDB data
+    networks:
+      - restaurant_network
+
+  rabbitmq:
+    image: rabbitmq:3-management # Includes management plugin
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI port
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq # Persist RabbitMQ data
+    environment:
+      # Default user/pass is guest/guest. Can be changed.
+      # RABBITMQ_DEFAULT_USER: user
+      # RABBITMQ_DEFAULT_PASS: password
+      RABBITMQ_NODENAME: rabbit@localhost # Ensures node name consistency
+    networks:
+      - restaurant_network
+
+  menu-service:
+    build:
+      context: ./menu-service # Path to Dockerfile and source for menu-service
+      dockerfile: Dockerfile
+    container_name: menu-service-app
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb # Wait for mongodb to be ready (basic check, not health check)
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/menu_db
+      # - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 # For remote debugging
+    networks:
+      - restaurant_network
+    restart: on-failure
+
+  order-service:
+    build:
+      context: ./order-service # Path to Dockerfile and source for order-service
+      dockerfile: Dockerfile
+    container_name: order-service-app
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - menu-service # Order service depends on menu service
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/order_db
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - MENU_SERVICE_BASEURL=http://menu-service:8081/menu-items
+      # - JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006 # For remote debugging
+    networks:
+      - restaurant_network
+    restart: on-failure
+
+volumes:
+  mongo_data: # Named volume for MongoDB data
+  rabbitmq_data: # Named volume for RabbitMQ data
+
+networks:
+  restaurant_network: # Custom bridge network
+    driver: bridge

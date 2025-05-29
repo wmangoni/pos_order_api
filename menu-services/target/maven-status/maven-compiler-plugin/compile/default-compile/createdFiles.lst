@@ -1,0 +1,8 @@
+com/allo/menuservice/controller/MenuItemController.class
+com/allo/menuservice/service/MenuItemService.class
+com/allo/menuservice/dto/MenuItemRequestDTO.class
+com/allo/menuservice/model/MenuItem.class
+com/allo/menuservice/dto/MenuItemResponseDTO.class
+com/allo/menuservice/MenuServiceApplication.class
+com/allo/menuservice/dto/PaginatedMenuItemResponseDTO.class
+com/allo/menuservice/repository/MenuItemRepository.class
