@@ -9,7 +9,7 @@ Both services are built using Java Spring Boot and use MongoDB for data storage.
 
 ## Project Structure
 
-
+```
 restaurant-pos-system/
 ├── menu-service/
 │   ├── Dockerfile
@@ -67,6 +67,7 @@ restaurant-pos-system/
 ├── docker-compose.yml
 ├── curl_requests.sh
 └── README.md
+```
 
 
 ## Prerequisites
