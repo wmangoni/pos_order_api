@@ -66,6 +66,7 @@ restaurant-pos-system/
 │               └── service/OrderServiceTest.java // Basic Test
 ├── docker-compose.yml
 ├── curl_requests.sh
+├── postman_collection.json
 └── README.md
 ```
 
@@ -120,6 +121,8 @@ restaurant-pos-system/
     chmod +x curl_requests.sh
     ./curl_requests.sh
     ```
+
+    Or you can test manually by postman importing collection (/postman_collection.json) on the root of project
 
 ## API Endpoints
 
