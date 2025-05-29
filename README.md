@@ -80,11 +80,11 @@ restaurant-pos-system/
 ## Tech Stack
 
 * Java 23
-* Spring Boot 3.x
+* Spring Boot 3.2.5
 * Spring Data MongoDB
 * Spring AMQP (RabbitMQ)
-* MongoDB
-* RabbitMQ
+* MongoDB 8.0
+* RabbitMQ 3.13.7
 * Docker & Docker Compose
 * Lombok
 
