@@ -1,8 +1,0 @@
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/MenuServiceApplication.java
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/repository/MenuItemRepository.java
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/controller/MenuItemController.java
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/dto/MenuItemResponseDTO.java
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/service/MenuItemService.java
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/model/MenuItem.java
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/dto/PaginatedMenuItemResponseDTO.java
-/home/wmangoni/Documents/repo/scripts/allo/menu-services/src/main/java/com/allo/menuservice/dto/MenuItemRequestDTO.java
